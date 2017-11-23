@@ -1,8 +1,4 @@
-﻿
-using NUnit.Framework;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
-using System;
+﻿using NUnit.Framework;
 
 namespace WebAddressbookTests
 {
@@ -12,9 +8,6 @@ namespace WebAddressbookTests
         [Test]
         public void ContactCreationTest()
         {
-            OpenHomePage();
-            Login(new AccountData("admin", "secret"));
-            InitContactCreation();
             Contact contact = new Contact();
                 contact.Firstname = "Vladimir";
                 contact.Middlename = "Middlername";
@@ -22,9 +15,8 @@ namespace WebAddressbookTests
                 contact.Nickname = "vlogvinov";
                 contact.Title = "Mr.";
                 contact.Company = "Valtech";
-            FillContactForm(contact);
-            SubmitContactCreation();
-            ReturnToHomePage();
+
+            app.Contacts.Create(contact);
         }
     }
 }
