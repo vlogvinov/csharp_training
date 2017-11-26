@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +9,12 @@ namespace WebAddressbookTests
 {
     public class GroupRemovalTests : TestBase
     {
+        [Test]
+        public void GroupRemovalTest()
+        {
+            int group = 20;
+
+            app.Groups.Remove(group);
+        }
     }
 }

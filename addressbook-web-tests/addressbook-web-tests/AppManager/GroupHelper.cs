@@ -13,6 +13,45 @@ namespace WebAddressbookTests
         {
         }
 
+        internal void Remove(int index)
+        {
+            manager.NavigationHelper.GoToGroupsPage();
+            SelectGroup(index);
+            RemoveGroup();
+            ReturnToGroupsPage();
+        }
+
+        internal GroupHelper Modify(int index, GroupData group)
+        {
+            manager.NavigationHelper.GoToGroupsPage();
+            SelectGroup(index);
+            InitGroupModification();
+            FillGroupForm(group);
+            SubmitGroupModification();
+            ReturnToGroupsPage();
+            return this;
+        }
+
+        public void SubmitGroupModification()
+        {
+            driver.FindElement(By.XPath("(//input[@name='update'])")).Click();
+        }
+
+        public void InitGroupModification()
+        {
+            driver.FindElement(By.XPath("(//input[@name='edit'])[1]")).Click();
+        }
+
+        private void RemoveGroup()
+        {
+            driver.FindElement(By.XPath("(//input[@name='delete'])[1]")).Click();
+        }
+
+        private void SelectGroup(int index)
+        {
+            driver.FindElement(By.XPath("(//span[@class='group']/input[@type='checkbox'])[" + index + "]")).Click();
+        }
+
         public GroupHelper Create(GroupData group)
         {
             manager.NavigationHelper.GoToGroupsPage();
