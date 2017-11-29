@@ -13,6 +13,7 @@ namespace WebAddressbookTests
         {  
         }
 
+        // HIGH LEVEL METHODS 
         public ContactHelper Create(Contact contact)
         {
             InitContactCreation();
@@ -22,19 +23,37 @@ namespace WebAddressbookTests
             return this;
         }
 
-        public ContactHelper ReturnToHomePage()
+        public ContactHelper Modify(int index, Contact contact)
         {
-            driver.FindElement(By.LinkText("home page")).Click();
+            SelectContact(index);
+            ClickOnEditIcon(index);
+            FillContactForm(contact);
+            SumbitContactUpdation();
             return this;
         }
 
-        public ContactHelper SubmitContactCreation()
+        public ContactHelper Remove(int contact)
         {
-            driver.FindElement(By.XPath("//div[@id='content']/form/input[21]")).Click();
+            SelectContact(contact);
+            ClickOnRemoveButton();
+            ConfirmContactRemoval();
+            return this;   
+        }
+
+        // LOW LEVEL METHODS 
+        private ContactHelper SelectContact(int contact)
+        {
+            driver.FindElement(By.XPath("(//tr[@name='entry']//input)[" + contact + "]")).Click();
             return this;
         }
 
-        public ContactHelper FillContactForm(Contact contact)
+        private ContactHelper InitContactCreation()
+        {
+            driver.FindElement(By.LinkText("add new")).Click();
+            return this;
+        }
+
+        private ContactHelper FillContactForm(Contact contact)
         {
             driver.FindElement(By.Name("firstname")).Click();
             driver.FindElement(By.Name("firstname")).Clear();
@@ -57,10 +76,39 @@ namespace WebAddressbookTests
             return this;
         }
 
-        public ContactHelper InitContactCreation()
+        private ContactHelper SubmitContactCreation()
         {
-            driver.FindElement(By.LinkText("add new")).Click();
+            driver.FindElement(By.XPath("//div[@id='content']/form/input[21]")).Click();
             return this;
+        }
+
+        private ContactHelper ConfirmContactRemoval()
+        {
+            IAlert alert = driver.SwitchTo().Alert();
+            alert.Accept();
+            return this;
+        }
+
+        private ContactHelper ClickOnRemoveButton()
+        {
+            driver.FindElement(By.XPath("//input[@value='Delete']")).Click();
+            return this;
+        }
+
+        private ContactHelper ReturnToHomePage()
+        {
+            driver.FindElement(By.LinkText("home page")).Click();
+            return this;
+        }
+
+        private void ClickOnEditIcon(int index)
+        {
+            driver.FindElement(By.XPath("(//tr[@name='entry'])[" + index + "]/td[8]/a")).Click();
+        }
+
+        private void SumbitContactUpdation()
+        {
+            driver.FindElement(By.XPath("(//input[@name='update'])[2]")).Click();
         }
     }
 }

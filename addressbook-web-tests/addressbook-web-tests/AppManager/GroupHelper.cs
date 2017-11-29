@@ -13,45 +13,7 @@ namespace WebAddressbookTests
         {
         }
 
-        internal void Remove(int index)
-        {
-            manager.NavigationHelper.GoToGroupsPage();
-            SelectGroup(index);
-            RemoveGroup();
-            ReturnToGroupsPage();
-        }
-
-        internal GroupHelper Modify(int index, GroupData group)
-        {
-            manager.NavigationHelper.GoToGroupsPage();
-            SelectGroup(index);
-            InitGroupModification();
-            FillGroupForm(group);
-            SubmitGroupModification();
-            ReturnToGroupsPage();
-            return this;
-        }
-
-        public void SubmitGroupModification()
-        {
-            driver.FindElement(By.XPath("(//input[@name='update'])")).Click();
-        }
-
-        public void InitGroupModification()
-        {
-            driver.FindElement(By.XPath("(//input[@name='edit'])[1]")).Click();
-        }
-
-        private void RemoveGroup()
-        {
-            driver.FindElement(By.XPath("(//input[@name='delete'])[1]")).Click();
-        }
-
-        private void SelectGroup(int index)
-        {
-            driver.FindElement(By.XPath("(//span[@class='group']/input[@type='checkbox'])[" + index + "]")).Click();
-        }
-
+        // HIGH LEVEL METHODS 
         public GroupHelper Create(GroupData group)
         {
             manager.NavigationHelper.GoToGroupsPage();
@@ -62,19 +24,63 @@ namespace WebAddressbookTests
             return this;
         }
 
-        public GroupHelper ReturnToGroupsPage()
+        public GroupHelper Modify(int index, GroupData group)
+        {
+            manager.NavigationHelper.GoToGroupsPage();
+            SelectGroup(index);
+            InitGroupModification();
+            FillGroupForm(group);
+            SubmitGroupModification();
+            ReturnToGroupsPage();
+            return this;
+        }
+
+        public void Remove(int index)
+        {
+            manager.NavigationHelper.GoToGroupsPage();
+            SelectGroup(index);
+            RemoveGroup();
+            ReturnToGroupsPage();
+        }
+
+        // LOW LEVEL METHODS 
+        private GroupHelper SubmitGroupModification()
+        {
+            driver.FindElement(By.XPath("(//input[@name='update'])")).Click();
+            return this;
+        }
+
+        private GroupHelper InitGroupModification()
+        {
+            driver.FindElement(By.XPath("(//input[@name='edit'])[1]")).Click();
+            return this;
+        }
+
+        private GroupHelper RemoveGroup()
+        {
+            driver.FindElement(By.XPath("(//input[@name='delete'])[1]")).Click();
+            return this;
+        }
+
+        private GroupHelper SelectGroup(int index)
+        {
+            driver.FindElement(By.XPath("(//span[@class='group']/input[@type='checkbox'])[" + index + "]")).Click();
+            return this;
+        }
+
+        private GroupHelper ReturnToGroupsPage()
         {
             driver.FindElement(By.LinkText("group page")).Click();
             return this;
         }
 
-        public GroupHelper SubmitGroupCreation()
+        private GroupHelper SubmitGroupCreation()
         {
             driver.FindElement(By.Name("submit")).Click();
             return this;
         }
 
-        public GroupHelper FillGroupForm(GroupData group)
+        private GroupHelper FillGroupForm(GroupData group)
         {
             driver.FindElement(By.Name("group_name")).Click();
             driver.FindElement(By.Name("group_name")).Clear();
@@ -88,7 +94,7 @@ namespace WebAddressbookTests
             return this;
         }
 
-        public GroupHelper InitGroupCreation()
+        private GroupHelper InitGroupCreation()
         {
             driver.FindElement(By.Name("new")).Click();
             return this;
