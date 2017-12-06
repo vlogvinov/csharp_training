@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace WebAddressbookTests
@@ -17,8 +18,9 @@ namespace WebAddressbookTests
         protected NavigationHelper navigationHelper;
         protected GroupHelper groupHelper;
         protected ContactHelper contactHelper;
+        private static ThreadLocal<ApplicationManager> app = new ThreadLocal<ApplicationManager>();
 
-        public ApplicationManager()
+        private ApplicationManager()
         {
             driver = new ChromeDriver();
             baseURL = "http://addressbook";
@@ -29,6 +31,19 @@ namespace WebAddressbookTests
             contactHelper = new ContactHelper(this);
         }
 
+        ~ApplicationManager()
+        {
+            driver.Quit();
+        }
+
+        public static ApplicationManager GetInstance()
+        {
+            if (! app.IsValueCreated)
+            {
+                app.Value = new ApplicationManager();
+            }
+             return app.Value;
+        }
         public IWebDriver Driver
         {
             get
@@ -38,10 +53,6 @@ namespace WebAddressbookTests
 
         }
 
-        public void Stop()
-        {
-            driver.Quit();
-        }
         public LoginHelper Auth
         {
             get
